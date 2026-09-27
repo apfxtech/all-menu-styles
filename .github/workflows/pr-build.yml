@@ -1,0 +1,53 @@
+name: "Pull request build"
+run-name: "Build PR #${{ github.event.pull_request.number }}"
+
+on: pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and report FAL sizes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build with ufbt
+        id: build-app
+        uses: flipperdevices/flipperzero-ufbt-action@v0.1
+        with:
+          sdk-channel: dev
+          sdk-index-url: https://up.unleashedflip.com/directory.json
+
+      - name: Report FAL count and sizes
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+
+          files = sorted(Path("dist").glob("*.fal"))
+          if not files:
+              raise SystemExit("Build produced no .fal files")
+
+          total = sum(path.stat().st_size for path in files)
+          lines = [
+              "## FAL build",
+              "",
+              f"Built **{len(files)}** .fal files; total **{total / 1024:.1f} KiB** ({total} bytes).",
+              "",
+              "| File | Size |",
+              "| --- | ---: |",
+          ]
+          for path in files:
+              size = path.stat().st_size
+              lines.append(f"| `{path.name}` | {size / 1024:.1f} KiB ({size} bytes) |")
+
+          report = "\n".join(lines) + "\n"
+          print(report, end="")
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
+              summary.write(report)
+          PY
