@@ -1,7 +1,12 @@
 name: "Build and release"
 run-name: "Build ${{ github.ref_name }}"
 
-on: push
+on:
+  push:
+    branches:
+      - "**"
+  schedule:
+    - cron: "0 0 * * 1"
 
 permissions:
   contents: write
@@ -19,12 +24,50 @@ jobs:
         id: build-app
         uses: flipperdevices/flipperzero-ufbt-action@v0.1
         with:
+          sdk-channel: dev
           sdk-index-url: https://up.unleashedflip.com/directory.json
 
+      - name: Tag successful build
+        id: tag
+        if: github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base="v$(LC_ALL=C date -u +%d%b%Y | tr '[:upper:]' '[:lower:]')"
+          part=1
+          while :; do
+            tag="$base"
+            if (( part > 1 )); then
+              tag="${base}p${part}"
+            fi
+
+            remote_tag=$(git ls-remote --tags --refs origin "refs/tags/$tag")
+            if [[ -n "$remote_tag" ]]; then
+              ((part += 1))
+              continue
+            fi
+
+            git tag "$tag" "$GITHUB_SHA"
+            if git push origin "refs/tags/$tag"; then
+              echo "name=$tag" >> "$GITHUB_OUTPUT"
+              break
+            fi
+
+            git tag -d "$tag"
+            remote_tag=$(git ls-remote --tags --refs origin "refs/tags/$tag")
+            if [[ -z "$remote_tag" ]]; then
+              echo "Could not push tag $tag" >&2
+              exit 1
+            fi
+            ((part += 1))
+          done
+
       - name: Publish GitHub release
-        if: startsWith(github.ref, 'refs/tags/')
+        if: steps.tag.outputs.name != ''
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ github.ref_name }}
+          name: ${{ steps.tag.outputs.name }}
+          tag_name: ${{ steps.tag.outputs.name }}
           files: dist/*.fal
           fail_on_unmatched_files: true
