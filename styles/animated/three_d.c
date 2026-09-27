@@ -1,8 +1,7 @@
-#include "menu_style_helpers.h"
+#include "../menu_style_helpers.h"
 
 #include <gui/gui.h>
-#include <gui/icon_animation_i.h>
-#include <gui/icon_i.h>
+#include <gui/icon_animation.h>
 
 #define LCD_W 128
 #define LCD_H 64
@@ -61,8 +60,8 @@ static inline __attribute__((always_inline)) uint8_t* cell(int x, int y, uint8_t
 
 static inline __attribute__((always_inline)) void
     draw_icon(Canvas* canvas, IconAnimation* icon, int cx, int cy, int percent) {
-    int sw = icon->icon->width;
-    int sh = icon->icon->height;
+    int sw = icon_animation_get_width(icon);
+    int sh = icon_animation_get_height(icon);
     int x = cx - sw / 2;
     int y = cy - sh / 2;
     canvas_draw_icon_animation(canvas, x, y, icon);

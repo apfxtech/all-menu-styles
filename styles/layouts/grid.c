@@ -1,4 +1,4 @@
-#include "menu_style_helpers.h"
+#include "../menu_style_helpers.h"
 
 #define MENU_STYLE_GRID_COLS 5
 #define MENU_STYLE_GRID_ROWS 3

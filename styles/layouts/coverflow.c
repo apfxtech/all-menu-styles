@@ -1,4 +1,4 @@
-#include "menu_style_helpers.h"
+#include "../menu_style_helpers.h"
 
 static const uint8_t menu_style_coverflow_lines[][4] = {
     {5, 36, 1, 37},   {4, 9, 1, 8},       {6, 41, 17, 36},   {19, 41, 30, 36},   {32, 41, 43, 36},

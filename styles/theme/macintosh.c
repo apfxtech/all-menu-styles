@@ -1,9 +1,8 @@
-#include "menu_style_helpers.h"
+#include "../menu_style_helpers.h"
 
 #include <furi_hal_version.h>
 #include <gui/gui.h>
-#include <gui/icon_animation_i.h>
-#include <gui/icon_i.h>
+#include <gui/icon_animation.h>
 
 #define LCD_W 128
 #define LCD_H 64
@@ -271,8 +270,8 @@ static inline __attribute__((always_inline)) void
             }
             canvas_draw_icon_animation(
                 canvas,
-                x + (ICON_W - item->icon->icon->width) / 2,
-                y + (ICON_H - item->icon->icon->height) / 2,
+                x + (ICON_W - icon_animation_get_width(item->icon)) / 2,
+                y + (ICON_H - icon_animation_get_height(item->icon)) / 2,
                 item->icon);
             int label_w = len * GLYPH_W + 2;
             int label_x = x + ICON_W / 2 - label_w / 2;

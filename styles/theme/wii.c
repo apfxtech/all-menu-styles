@@ -1,4 +1,4 @@
-#include "menu_style_helpers.h"
+#include "../menu_style_helpers.h"
 
 static void menu_style_wii_draw(Canvas* canvas, MenuModel* model) {
     size_t position = model->position;

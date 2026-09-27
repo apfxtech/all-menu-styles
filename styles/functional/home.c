@@ -1,4 +1,4 @@
-#include "menu_style_helpers.h"
+#include "../menu_style_helpers.h"
 #include <furi_hal_rtc.h>
 #include <power/power_service/power.h>
 

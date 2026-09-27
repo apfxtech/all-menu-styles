@@ -1,4 +1,4 @@
-#include "menu_style_helpers.h"
+#include "../menu_style_helpers.h"
 #include <furi_hal_rtc.h>
 
 static void menu_style_vertical_draw(Canvas* canvas, MenuModel* model) {

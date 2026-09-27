@@ -1,4 +1,4 @@
-#include "menu_style_helpers.h"
+#include "../menu_style_helpers.h"
 #include <loader/loader.h>
 #include <storage/storage.h>
 #include <flipper_application/flipper_application.h>

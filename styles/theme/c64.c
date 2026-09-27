@@ -1,4 +1,4 @@
-#include "menu_style_helpers.h"
+#include "../menu_style_helpers.h"
 
 #define MENU_STYLE_C64_ROWS 5 // Two columns of five, so a page of ten
 

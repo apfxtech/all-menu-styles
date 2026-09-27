@@ -1,4 +1,4 @@
-#include "menu_style_helpers.h"
+#include "../menu_style_helpers.h"
 
 #define MENU_STYLE_COMPACT_ROWS 8 // Two columns of eight, so a page of sixteen
 

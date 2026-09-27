@@ -1,4 +1,4 @@
-#include "menu_style_helpers.h"
+#include "../menu_style_helpers.h"
 #include <dolphin/dolphin.h>
 #include <furi_hal_version.h>
 
