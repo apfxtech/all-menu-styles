@@ -1,5 +1,13 @@
-# Each appid must start with "menu_style_": fbt names the .fal after it, and Settings uses that
-# prefix to tell menu styles apart from every other loader plugin in the same directory.
+App(
+    appid="menu_viewer",
+    name="MenuView",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="menu_viewer_app",
+    requires=["gui", "storage"],
+    stack_size=4 * 1024,
+    fap_category="Tools",
+    sources=["viewer/menu_viewer.c"],
+)
 
 App(
     appid="menu_style_ps4",
